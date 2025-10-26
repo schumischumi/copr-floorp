@@ -32,8 +32,11 @@ jobs:
           pwd
           FLOORP_VER_ORIGINAL=$(curl -s https://api.github.com/repos/Floorp-Projects/Floorp/releases/latest | jq -r '.tag_name')
           FLOORP_VER=$(echo $FLOORP_VER_ORIGINAL | cut -d 'v' -f 2)
-          OLD_VER=$(grep '^Version:' /home/runner/work/copr/copr/floorp/floorp.spec | awk '{print $2}')
-          sed -i '0,/Version:.*/s//Version:            '$FLOORP_VER'/' /home/runner/work/copr/copr/floorp/floorp.spec
+          ls /home/runner/work 
+          ls /home/runner/work/copr-floorp || true
+          ls /home/runner/work/copr-floorp/copr-floorp || true
+          OLD_VER=$(grep '^Version:' /home/runner/work/copr-floorp/copr-floorp/floorp/floorp.spec | awk '{print $2}')
+          sed -i '0,/Version:.*/s//Version:            '$FLOORP_VER'/' /home/runner/work/copr-floorp/copr-floorp/floorp/floorp.spec
           if [ "$FLOORP_VER" != "$OLD_VER" ]; then
             echo "version_changed=true" >> $GITHUB_OUTPUT
           else
